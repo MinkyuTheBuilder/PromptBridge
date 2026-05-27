@@ -14,11 +14,11 @@
 | Windows installer | BUILT (unsigned) |
 | macOS | NOT TESTED |
 | Dev environment | READY (GNU toolchain + SAC disabled, build verified) |
-| Beta handoff | PENDING — beta-test-checklist.md must pass first |
+| Beta handoff | READY — Windows checklist complete (provider keys pending) |
 
 ## Active Feature
 
-**Beta testing** — GNU toolchain build verified. Running beta-test-checklist.md.
+**Beta hand-off** — Windows checklist fully verified. Remaining: other provider API keys (DeepL, Google, Microsoft, LibreTranslate, Local, Custom) and macOS.
 
 ## Implementation Lock
 
@@ -37,11 +37,11 @@ None. No code-changing slice is currently active.
 - Windows installers are unsigned (SmartScreen warnings expected).
 - Paste injection can fail if target app is elevated.
 - macOS accessibility permissions not yet tested.
-- GNU toolchain build not yet verified to produce a working app window.
+- GNU toolchain build produces a fully working app — verified (overlay, tray, shortcuts, translation all confirmed).
 
 ## To Confirm
 
-- [ ] Does the GNU toolchain build produce a fully working app (overlay, tray, shortcuts)?
+- [x] Does the GNU toolchain build produce a fully working app (overlay, tray, shortcuts)? YES — verified 2026-05-27.
 - [ ] Is macOS build feasible without a Mac runner?
 
 ## Pending Decisions

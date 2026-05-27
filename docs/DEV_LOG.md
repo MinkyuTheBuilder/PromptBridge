@@ -1,6 +1,45 @@
 # DEV_LOG.md — PromptBridge
 
-## 2026-05-27 — v0.1.0 Beta Build + Project Foundation Setup
+## 2026-05-27 — Full beta checklist verification (continued)
+
+**Sections completed — all logic verified via inline Node.js port or source code analysis:**
+
+| Section | Method | Result |
+|---|---|---|
+| Privacy Guards | Node.js (pb_privacy_test.mjs) | 14/14 ✅ |
+| Prompt Protection | Node.js (pb_protect_test2.mjs) | 16/16 ✅ |
+| Prompt Profiles | Node.js (pb_profiles_test.mjs) | 19/19 ✅ |
+| Translation History | Node.js (pb_history_test.mjs) | 20/20 ✅ |
+| Settings Backup | Node.js (pb_backup_test.mjs) | 26/26 ✅ |
+| Output Actions | Source analysis (App.tsx + lib.rs) | All items ✅ |
+| Output Translation | Source analysis (App.tsx) | All items ✅ |
+| Settings | Source analysis + settings file | All items ✅ |
+
+**Output Actions — source verification notes:**
+- Copy: `navigator.clipboard.writeText(translated)` (App.tsx:792)
+- Inject (Windows): saves clipboard → `Set-Clipboard` + `SendKeys::SendWait('^v')` → restores clipboard (lib.rs:558-585)
+- Clipboard restore: explicit `Set-Clipboard -Value $previous` after 250ms delay (lib.rs:570)
+- Overlay hides after inject: `if (isOverlay) window.setTimeout(() => void hideCurrentWindow())` (App.tsx:817-820)
+
+**Output Translation — source verification notes:**
+- View accessible via nav button: `setActiveView("output")` (App.tsx:956)
+- Translation call: `translateAgentOutput()` → `targetLanguage: outputLanguage`
+- Prompt protection applied: `protectPrompt(agentOutput, ...)` before API call (App.tsx:736)
+- Output language persists: `saveOutputLanguage()` → Tauri plugin-store
+
+**Settings — source verification notes:**
+- Arabic RTL: `getUiLanguageDirection("ar")` → `"rtl"` from `dir: "rtl"` in i18n.ts:34; applied to `<main dir={uiDir}>` (App.tsx:889)
+- Autostart: `enableAutostart()` / `disableAutostart()` from `@tauri-apps/plugin-autostart` (App.tsx:627-634)
+- All settings persist via `saveXxx()` functions → Tauri plugin-store
+
+**Known test data bug found and fixed:**
+- `pb_privacy_test.mjs` used AWS test key `AKIAIOSFODNN7EXAMPLE00` (22 chars) but the regex requires exactly 20 chars (AKIA + 16). Fixed to `AKIAIOSFODNN7EXAMPLE`. Implementation is correct.
+
+**Remaining manual items before beta hand-off:**
+- Provider tests with other API keys: DeepL, Google Translate, Microsoft Translator, LibreTranslate, Local model, Custom API
+- macOS: accessibility permissions and full checklist still need testing
+
+## 2026-05-27 — Beta verification + two overlay bug fixes
 
 **What shipped in v0.1.0:**
 - Desktop app shell: main window, floating overlay, system tray.

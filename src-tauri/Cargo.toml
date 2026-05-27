@@ -1,0 +1,27 @@
+[package]
+name = "promptbridge"
+version = "0.1.0"
+description = "A desktop bridge from any source language to English AI-agent prompts."
+authors = ["PromptBridge"]
+edition = "2021"
+
+[lib]
+name = "promptbridge_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "promptbridge"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-autostart = "2"
+tauri-plugin-clipboard-manager = "2"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-store = "2"

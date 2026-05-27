@@ -1,0 +1,275 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .wrap { padding: 1.5rem 0; max-width: 680px; }
+  h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+  h3 { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+  p, li { font-size: 14px; color: var(--color-text-secondary); line-height: 1.65; }
+  .section { margin-bottom: 2rem; }
+  .badge { display:inline-block; font-size:11px; font-weight:500; padding:2px 8px; border-radius:var(--border-radius-md); }
+  .badge-red { background:var(--color-background-danger); color:var(--color-text-danger); }
+  .badge-green { background:var(--color-background-success); color:var(--color-text-success); }
+  .badge-blue { background:var(--color-background-info); color:var(--color-text-info); }
+  .badge-warn { background:var(--color-background-warning); color:var(--color-text-warning); }
+  .card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1rem 1.25rem; margin-bottom:12px; }
+  .card-danger { border-left: 3px solid var(--color-border-danger); }
+  .card-success { border-left: 3px solid var(--color-border-success); }
+  .card-info { border-left: 3px solid var(--color-border-info); }
+  .card-warn { border-left: 3px solid var(--color-border-warning); }
+  .phase { display:grid; grid-template-columns:90px 1fr; gap:12px; margin-bottom:14px; }
+  .phase-label { font-size:12px; font-weight:500; color:var(--color-text-secondary); padding-top:2px; }
+  .phase-num { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; font-size:12px; font-weight:500; background:var(--color-background-secondary); color:var(--color-text-primary); margin-right:6px; flex-shrink:0; }
+  .feature-row { display:flex; align-items:baseline; gap:8px; margin-bottom:6px; }
+  .cut { text-decoration: line-through; color: var(--color-text-tertiary); }
+  .check { color: var(--color-text-success); font-weight:500; }
+  .x { color: var(--color-text-danger); font-weight:500; }
+  hr { border:none; border-top:0.5px solid var(--color-border-tertiary); margin:1.5rem 0; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .risk-row { display:flex; justify-content:space-between; align-items:baseline; padding:6px 0; border-bottom:0.5px solid var(--color-border-tertiary); font-size:13px; }
+  .risk-row:last-child { border-bottom:none; }
+  table { width:100%; font-size:13px; border-collapse:collapse; }
+  td,th { padding:7px 10px; text-align:left; border-bottom:0.5px solid var(--color-border-tertiary); }
+  th { font-weight:500; color:var(--color-text-primary); font-size:12px; }
+  td { color:var(--color-text-secondary); }
+  tr:last-child td { border-bottom:none; }
+  .ask-btn { display:inline-block; margin-top:10px; font-size:13px; color:var(--color-text-info); cursor:pointer; background:none; border:0.5px solid var(--color-border-info); border-radius:var(--border-radius-md); padding:5px 12px; }
+  .ask-btn:hover { background:var(--color-background-info); }
+</style>
+
+<div class="wrap">
+
+  <div class="section">
+    <h2>PromptBridge — Final Plan</h2>
+    <p style="margin-top:6px;">두 계획서의 핵심 문제: <strong>MVP 범위 과잉 + 가장 어려운 기술 문제를 과소평가.</strong> 이 계획은 그 반대로 간다.</p>
+  </div>
+
+  <div class="section">
+    <h3>제품 정의 (변경 없음)</h3>
+    <div class="card card-info">
+      <p style="font-size:14px; color:var(--color-text-primary); font-weight:500; line-height:1.7;">비영어권 개발자가 AI 코딩 에이전트를 자기 언어로 쓸 수 있게 해주는 macOS/Windows 데스크톱 브리지.</p>
+      <p style="margin-top:6px;">번역기가 아니라 <strong>코딩 컨텍스트 인식 언어 어댑터</strong>. 코드·명령어·경로는 절대 건드리지 않음.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>가장 어려운 기술 문제 — 먼저 풀어야 함</h3>
+    <div class="card card-danger">
+      <p style="font-weight:500; color:var(--color-text-primary); margin-bottom:8px;">⚠️ Spike (Week 0): 텍스트 주입 신뢰성 검증</p>
+      <p>두 계획서 모두 <code>enigo</code>로 "전체선택→복사→붙여넣기" 하면 된다고 가정했는데, 실제로는 다음 상황에서 깨진다:</p>
+      <ul style="margin:8px 0 0 16px;">
+        <li>macOS 접근성 권한 없을 때</li>
+        <li>Claude Code / iTerm2 같은 앱이 포커스를 특이하게 처리할 때</li>
+        <li>Windows에서 관리자 권한 앱 위에서 일반 권한 앱이 입력을 못 넣을 때</li>
+        <li>IME 입력 중 단축키가 충돌할 때</li>
+      </ul>
+      <p style="margin-top:8px;"><strong>해결책:</strong> 개발 시작 전 1주일을 이 검증에만 씀. 결과에 따라 전체 아키텍처가 바뀔 수 있음.</p>
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="section">
+    <h3>진짜 MVP 범위 (7개 기능만)</h3>
+    <p style="margin-bottom:10px;">두 계획서에서 과감하게 제거해야 할 것과 반드시 남겨야 할 것:</p>
+    
+    <div class="two-col">
+      <div>
+        <p class="check" style="font-size:13px; margin-bottom:6px;">✓ MVP에 포함</p>
+        <div class="card" style="padding:10px 12px;">
+          <div class="feature-row"><span class="check">✓</span><span>macOS + Windows 시스템 트레이 상주</span></div>
+          <div class="feature-row"><span class="check">✓</span><span>전역 단축키 1개 (입력 번역)</span></div>
+          <div class="feature-row"><span class="check">✓</span><span>플로팅 입력 오버레이</span></div>
+          <div class="feature-row"><span class="check">✓</span><span>한글 → 영어 번역 (DeepL API)</span></div>
+          <div class="feature-row"><span class="check">✓</span><span>클립보드 복사 (붙여넣기는 선택)</span></div>
+          <div class="feature-row"><span class="check">✓</span><span>코드블록 보호 (핵심 차별점)</span></div>
+          <div class="feature-row"><span class="check">✓</span><span>API 키 설정 화면</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="x" style="font-size:13px; margin-bottom:6px;">✗ MVP에서 제거</p>
+        <div class="card" style="padding:10px 12px;">
+          <div class="feature-row"><span class="x">✗</span><span class="cut">영어→한글 출력 번역</span></div>
+          <div class="feature-row"><span class="x">✗</span><span class="cut">프롬프트 최적화 프로필</span></div>
+          <div class="feature-row"><span class="x">✗</span><span class="cut">SQLite 캐시</span></div>
+          <div class="feature-row"><span class="x">✗</span><span class="cut">LibreTranslate 옵션</span></div>
+          <div class="feature-row"><span class="x">✗</span><span class="cut">히스토리 20개</span></div>
+          <div class="feature-row"><span class="x">✗</span><span class="cut">자동 엔터 실행</span></div>
+          <div class="feature-row"><span class="x">✗</span><span class="cut">민감정보 감지</span></div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:10px; font-size:13px; color:var(--color-text-secondary);">출력 번역, 프롬프트 최적화, 캐시는 v1.1로. 먼저 입력 하나를 완벽하게 만들어야 함.</p>
+  </div>
+
+  <hr/>
+
+  <div class="section">
+    <h3>현실적인 개발 일정 (8주)</h3>
+
+    <div class="card" style="padding:12px 16px; margin-bottom:0;">
+      <div class="phase">
+        <div>
+          <span class="badge badge-red">Week 0</span>
+          <div class="phase-label" style="margin-top:4px;">기술 검증</div>
+        </div>
+        <div>
+          <p style="font-weight:500; color:var(--color-text-primary);">Spike — 텍스트 주입 방식 결정</p>
+          <ul style="margin:6px 0 0 16px;">
+            <li>macOS: <code>enigo</code> vs AppleScript vs Accessibility API 직접 호출 중 어느 게 Claude Code/터미널에서 안정적인지 테스트</li>
+            <li>Windows: <code>SendInput</code> vs UI Automation API 테스트</li>
+            <li><strong>결과물:</strong> "붙여넣기 방식 결정문서" — 이 결과가 전체 아키텍처를 결정함</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div>
+          <span class="badge badge-warn">Week 1–2</span>
+          <div class="phase-label" style="margin-top:4px;">뼈대</div>
+        </div>
+        <div>
+          <p style="font-weight:500; color:var(--color-text-primary);">Tauri 프로젝트 + 단축키 + 오버레이</p>
+          <ul style="margin:6px 0 0 16px;">
+            <li>Tauri 2 + React + TypeScript 프로젝트 생성</li>
+            <li>전역 단축키 등록 및 충돌 처리</li>
+            <li>플로팅 입력 창 (frameless, always-on-top)</li>
+            <li>시스템 트레이 기본 메뉴</li>
+            <li>macOS 접근성 권한 요청 흐름</li>
+            <li><strong>검증:</strong> Claude Code, iTerm2, VS Code, 메모장 위에서 단축키 작동</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div>
+          <span class="badge badge-warn">Week 3–4</span>
+          <div class="phase-label" style="margin-top:4px;">번역 + 주입</div>
+        </div>
+        <div>
+          <p style="font-weight:500; color:var(--color-text-primary);">DeepL 연동 + 텍스트 주입</p>
+          <ul style="margin:6px 0 0 16px;">
+            <li>DeepL API Free 연동 (에러 처리 포함)</li>
+            <li>Week 0 결과 기반 텍스트 주입 구현</li>
+            <li>원래 클립보드 복원 로직</li>
+            <li>번역 실패 시 UI 피드백</li>
+            <li><strong>검증:</strong> 10가지 한글 입력 시나리오 테스트</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div>
+          <span class="badge badge-blue">Week 5</span>
+          <div class="phase-label" style="margin-top:4px;">코드 보호</div>
+        </div>
+        <div>
+          <p style="font-weight:500; color:var(--color-text-primary);">보호 텍스트 모듈 — 핵심 차별점</p>
+          <ul style="margin:6px 0 0 16px;">
+            <li>코드블록, 인라인 코드, 파일경로, URL, 명령어 탐지</li>
+            <li>placeholder 치환 → 번역 → 복원 파이프라인</li>
+            <li><strong>검증:</strong> "이 <code>git rebase -i HEAD~3</code> 명령어 설명해줘" 같은 혼합 입력 20케이스</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div>
+          <span class="badge badge-blue">Week 6</span>
+          <div class="phase-label" style="margin-top:4px;">설정 + UX</div>
+        </div>
+        <div>
+          <p style="font-weight:500; color:var(--color-text-primary);">설정 화면 + 온보딩</p>
+          <ul style="margin:6px 0 0 16px;">
+            <li>API 키 입력 및 저장 (<code>tauri-plugin-store</code>)</li>
+            <li>단축키 변경 UI</li>
+            <li>macOS 권한 안내 화면 (스크린샷 포함)</li>
+            <li>자동 시작 옵션</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div>
+          <span class="badge badge-green">Week 7–8</span>
+          <div class="phase-label" style="margin-top:4px;">배포</div>
+        </div>
+        <div>
+          <p style="font-weight:500; color:var(--color-text-primary);">패키징 + 베타</p>
+          <ul style="margin:6px 0 0 16px;">
+            <li>macOS <code>.dmg</code> 빌드 (notarization은 베타 이후)</li>
+            <li>Windows <code>.msi</code> 빌드</li>
+            <li>GitHub Releases + 기본 README</li>
+            <li>지인 3–5명 베타 테스트 후 v0.1 공개</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="section">
+    <h3>기술 스택 (확정)</h3>
+    <table>
+      <tr><th>구성</th><th>선택</th><th>이유</th></tr>
+      <tr><td>앱 프레임워크</td><td>Tauri 2.x</td><td>두 계획서 동일, 맞는 선택</td></tr>
+      <tr><td>프론트엔드</td><td>React + TypeScript + Tailwind</td><td>동일</td></tr>
+      <tr><td>번역 엔진</td><td>DeepL API Free <strong>하나만</strong></td><td>MVP에서 엔진 선택지 제공 불필요</td></tr>
+      <tr><td>텍스트 주입</td><td><strong>Week 0 결과 이후 결정</strong></td><td>enigo 단독으로는 불충분할 수 있음</td></tr>
+      <tr><td>설정 저장</td><td>tauri-plugin-store</td><td>SQLite는 오버킬, MVP에 불필요</td></tr>
+      <tr><td>클립보드</td><td>tauri-plugin-clipboard-manager</td><td>동일</td></tr>
+      <tr><td>단축키</td><td>tauri-plugin-global-shortcut</td><td>동일</td></tr>
+    </table>
+  </div>
+
+  <hr/>
+
+  <div class="section">
+    <h3>리스크 재평가</h3>
+    <div class="card">
+      <div class="risk-row">
+        <span>텍스트 주입 신뢰성</span>
+        <span class="badge badge-red">최고 위험</span>
+      </div>
+      <div class="risk-row">
+        <span>macOS notarization (배포 시)</span>
+        <span class="badge badge-warn">중간 — v0.1 이후로 미룸</span>
+      </div>
+      <div class="risk-row">
+        <span>Windows Defender 오탐</span>
+        <span class="badge badge-warn">중간 — 오픈소스로 완화</span>
+      </div>
+      <div class="risk-row">
+        <span>DeepL API 품질</span>
+        <span class="badge badge-green">낮음</span>
+      </div>
+      <div class="risk-row">
+        <span>코드블록 보호 누락</span>
+        <span class="badge badge-warn">중간 — 테스트 케이스로 완화</span>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="section">
+    <h3>v1.0 이후 로드맵 (순서대로)</h3>
+    <div class="card" style="padding:10px 16px;">
+      <div class="feature-row"><span style="color:var(--color-text-secondary);font-size:13px; min-width:40px;">v1.1</span><span>영어→한글 출력 번역 오버레이</span></div>
+      <div class="feature-row"><span style="color:var(--color-text-secondary);font-size:13px; min-width:40px;">v1.2</span><span>프롬프트 최적화 프로필 (버그수정/리뷰/리팩터링)</span></div>
+      <div class="feature-row"><span style="color:var(--color-text-secondary);font-size:13px; min-width:40px;">v1.3</span><span>번역 캐시 (SQLite) + 히스토리</span></div>
+      <div class="feature-row"><span style="color:var(--color-text-secondary);font-size:13px; min-width:40px;">v2.0</span><span>유료화 검토 (프로필 커스텀, 로컬 모드)</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>첫 번째 실행 명령 (오늘)</h3>
+    <div class="card card-success">
+      <p style="font-weight:500; color:var(--color-text-primary); margin-bottom:6px;">Week 0 Spike부터 시작</p>
+      <p>Claude Code 또는 iTerm2를 열고, <code>enigo</code> 없이 순수 AppleScript + osascript로 현재 포커스된 텍스트필드에 텍스트를 주입할 수 있는지 먼저 확인하라. 이게 되면 enigo 기반으로, 안 되면 macOS Accessibility API 직접 접근 방향으로 아키텍처를 잡는다.</p>
+    </div>
+    <button class="ask-btn" onclick="sendPrompt('Week 0 Spike를 위한 macOS 텍스트 주입 테스트 코드를 작성해줘. AppleScript와 enigo 두 방식 모두.')">텍스트 주입 Spike 코드 요청 ↗</button>
+  </div>
+
+</div>

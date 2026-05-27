@@ -6,8 +6,8 @@ Use this checklist before sharing a Windows or macOS beta build.
 
 The Windows release build succeeded and produced:
 
-- `src-tauri/target/release/bundle/msi/PromptBridge_0.1.0_x64_en-US.msi`
-- `src-tauri/target/release/bundle/nsis/PromptBridge_0.1.0_x64-setup.exe`
+- `C:\RustBuilds\PromptBridge\release\bundle\msi\PromptBridge_0.1.0_x64_en-US.msi`
+- `C:\RustBuilds\PromptBridge\release\bundle\nsis\PromptBridge_0.1.0_x64-setup.exe`
 
 ## Install And Launch
 

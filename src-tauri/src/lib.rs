@@ -734,6 +734,19 @@ pub fn run() {
                 )?;
             }
 
+            // Hide the main window on close instead of destroying it, so the
+            // overlay's "open main window" button can always bring it back.
+            #[cfg(desktop)]
+            if let Some(main) = app.get_webview_window("main") {
+                let main_clone = main.clone();
+                main.on_window_event(move |event| {
+                    if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+                        api.prevent_close();
+                        let _ = main_clone.hide();
+                    }
+                });
+            }
+
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

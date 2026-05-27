@@ -859,10 +859,6 @@ export function App() {
     await invoke("show_main_window");
   }
 
-  async function dragOverlayWindow() {
-    if (!isTauriRuntime()) return;
-    await getCurrentWindow().startDragging();
-  }
 
   function handleWorkspaceKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (event.key === "Escape" && isOverlay) {
@@ -895,7 +891,7 @@ export function App() {
       onKeyDown={handleWorkspaceKeyDown}
     >
       {isOverlay ? (
-        <header className="overlay-titlebar" onMouseDown={dragOverlayWindow}>
+        <header className="overlay-titlebar" data-tauri-drag-region>
           <div>
             <GripHorizontal size={16} aria-hidden="true" />
             <strong>PromptBridge</strong>

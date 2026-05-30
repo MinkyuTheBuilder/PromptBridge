@@ -35,9 +35,10 @@ The Windows release build succeeded and produced:
 - Test provider succeeds with valid provider settings.
 - Failed provider tests show the provider error message.
 - DeepL mode accepts a DeepL key.
-- Google Translate mode accepts a Google API key.
+- Google Cloud Translate mode accepts a Cloud Translation API key.
 - Microsoft Translator mode accepts key, endpoint, and optional region.
 - OpenAI-compatible mode accepts endpoint, model, and key.
+- Gemini mode accepts a Gemini API key and uses the Gemini OpenAI-compatible endpoint.
 - Local translation model mode works without an API key when the local server does not require auth.
 - LibreTranslate mode accepts a server URL and optional key.
 - Custom API key mode requires endpoint, model, and key.
@@ -73,25 +74,23 @@ The Windows release build succeeded and produced:
 - AWS access keys show a sensitive-data warning.
 - Private key blocks show a sensitive-data warning.
 - Generic `API_KEY=...`, `token=...`, and `password=...` assignments show a warning.
-- Warnings appear in Input Translate and Output Translate.
+- Warnings appear in Input Translate.
 - Warnings do not block translation.
 - Redact detected values replaces sensitive spans in Input Translate.
-- Redact detected values replaces sensitive spans in Output Translate.
 - Block sensitive sends can be enabled from Settings.
 - When Block sensitive sends is on, sensitive Input Translate content does not call the provider.
-- When Block sensitive sends is on, sensitive Output Translate content does not call the provider.
 - Turning Block sensitive sends off returns to warning-only behavior.
 
 ## Prompt Profiles
 
-- Direct translation leaves translated output unmodified.
+- Default AI agent prompt profile rewrites translated output into a clear, actionable coding-agent prompt.
 - Bug fix profile appends root-cause and regression-test guidance.
 - Refactor profile appends behavior-preserving guidance.
 - Code review profile appends severity-ordered review guidance.
 - Tests profile appends coverage guidance.
 - Docs profile appends documentation guidance.
 - Custom profile appends saved user instructions.
-- Empty Custom profile leaves translated output unmodified.
+- Empty Custom profile uses the default AI agent prompt shape.
 - Selected profile persists after restart.
 
 ## Translation History
@@ -100,7 +99,6 @@ The Windows release build succeeded and produced:
 - Output translations are saved to local history.
 - History search finds source, result, provider, profile, and language matches.
 - Restoring a prompt history item opens Input Translate with source/result restored.
-- Restoring an output history item opens Output Translate with source/result restored.
 - Deleting one history item removes only that item.
 - Clear history removes local history entries.
 - Save local history can be turned off from Settings.
@@ -121,19 +119,13 @@ The Windows release build succeeded and produced:
 ## Output Actions
 
 - Copy writes the translated prompt to clipboard.
-- Inject pastes into Notepad.
-- Inject pastes into VS Code input fields.
-- Original clipboard content is restored after injection.
-- Overlay hides after successful injection.
+- Paste injection is temporarily hidden.
+- Users manually paste copied prompts into the target app.
 
 ## Output Translation
 
-- Output Translate view opens from the sidebar.
-- English agent output translates into the selected output language.
-- Output language persists after restart.
-- Code blocks, inline code, commands, paths, and URLs remain unchanged.
-- Localized output can be copied.
-- Localized output can be injected into the focused app.
+- Output Translate is temporarily hidden.
+- Users manually copy English agent output into their preferred translation workflow.
 
 ## Settings
 

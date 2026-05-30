@@ -77,7 +77,7 @@ export function inspectProtectedTokens(input: string, customTerms: string[] = []
 export function createEnglishPromptPreview(input: string, providerName: string) {
   if (!input.trim()) return "";
 
-  return `Please help me with the following coding task:\n\n${input.trim()}\n\nKeep code, commands, file paths, URLs, and protected placeholders unchanged.\n\nProvider mode: ${providerName} BYOK preview.`;
+  return `${input.trim()}\n\nProvider mode: ${providerName} BYOK preview.`;
 }
 
 export function parseCustomProtectedTerms(input: string) {

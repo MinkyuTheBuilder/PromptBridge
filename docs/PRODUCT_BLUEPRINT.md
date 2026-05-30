@@ -18,7 +18,7 @@ A floating desktop overlay that accepts a prompt in any human language and retur
 |---|---|
 | Floating overlay with global shortcut | Shipped |
 | System tray (open main window, open overlay, quit) | Shipped |
-| BYOK translation providers (DeepL, Google, Microsoft, OpenAI-compatible, LibreTranslate, local model, custom API) | Shipped |
+| BYOK translation providers (DeepL, Google Cloud Translate, Microsoft, OpenAI-compatible, Gemini, LibreTranslate, local model, custom API) | Shipped |
 | Provider connection test | Shipped |
 | Provider usage estimate + alert threshold | Shipped |
 | Prompt protection (code, commands, paths, URLs, placeholders) | Shipped |
@@ -29,7 +29,7 @@ A floating desktop overlay that accepts a prompt in any human language and retur
 | Output translation (English agent response → reading language) | Shipped |
 | Local translation history with search, restore, delete, retention | Shipped |
 | Settings backup / import JSON | Shipped |
-| Copy + paste injection output actions | Shipped |
+| Copy output action | Shipped |
 | UI language switcher (13 languages, Arabic RTL) | Shipped |
 | Configurable overlay shortcut | Shipped |
 | Login autostart | Shipped |

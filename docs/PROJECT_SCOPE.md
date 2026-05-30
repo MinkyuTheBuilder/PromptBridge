@@ -4,7 +4,7 @@
 
 - Floating overlay window opened by global shortcut.
 - System tray integration (open window, open overlay, quit).
-- BYOK translation provider support (DeepL, Google, Microsoft, OpenAI-compatible, LibreTranslate, local, custom).
+- BYOK translation provider support (DeepL, Google Cloud Translate, Microsoft, OpenAI-compatible, Gemini, LibreTranslate, local, custom).
 - Provider connection testing and usage estimation.
 - Prompt protection (code, commands, paths, URLs, placeholders, custom terms).
 - Privacy guards and optional sensitive-send blocking.
@@ -12,7 +12,7 @@
 - Output translation (English → reading language).
 - Local translation history with retention controls.
 - Settings backup and import.
-- Copy and paste injection output actions.
+- Copy output action. Paste injection is temporarily hidden.
 - UI localization (13 languages, RTL support).
 - Configurable overlay shortcut and login autostart.
 - Windows and macOS desktop targets.
@@ -39,5 +39,5 @@
 | Platform-managed API credits | — | Later |
 | Local history | MVP | — |
 | Shared team history | — | Later |
-| Manual paste injection | MVP | — |
+| Manual copy/paste | MVP | Paste injection temporarily hidden |
 | Background / scheduled translation | — | Later |

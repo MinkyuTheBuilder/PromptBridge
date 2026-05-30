@@ -111,7 +111,7 @@ async fn translate_prompt(request: TranslateRequest) -> Result<TranslateResult, 
         "deepl" => translate_with_deepl(request).await,
         "google" => translate_with_google(request).await,
         "microsoft" => translate_with_microsoft(request).await,
-        "openai-compatible" | "custom-api" | "local" => {
+        "openai-compatible" | "gemini" | "custom-api" | "local" => {
             translate_with_openai_compatible(request).await
         }
         "libretranslate" => translate_with_libretranslate(request).await,
@@ -192,19 +192,22 @@ fn target_language_label(target_language: &str) -> &'static str {
 }
 
 async fn translate_with_deepl(request: TranslateRequest) -> Result<TranslateResult, String> {
-    if request.api_key.trim().is_empty() {
+    let api_key = request.api_key.trim().to_string();
+
+    if api_key.is_empty() {
         return Err("DeepL API 키가 필요합니다.".to_string());
     }
 
     let endpoint = request
         .endpoint
-        .clone()
-        .filter(|value| !value.trim().is_empty())
+        .as_deref()
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+        .map(String::from)
         .unwrap_or_else(|| "https://api-free.deepl.com/v2/translate".to_string());
     let target_language = deepl_target_language(&requested_target_language(&request));
 
     let form = vec![
-        ("auth_key", request.api_key),
         ("text", request.text),
         ("target_lang", target_language),
         ("preserve_formatting", "1".to_string()),
@@ -212,6 +215,7 @@ async fn translate_with_deepl(request: TranslateRequest) -> Result<TranslateResu
 
     let response = reqwest::Client::new()
         .post(endpoint)
+        .header(AUTHORIZATION, format!("DeepL-Auth-Key {api_key}"))
         .form(&form)
         .send()
         .await
@@ -275,6 +279,13 @@ async fn translate_with_google(request: TranslateRequest) -> Result<TranslateRes
         .map_err(|error| format!("Google Translate 응답을 읽을 수 없습니다: {error}"))?;
 
     if !status.is_success() {
+        if status.as_u16() == 403 && body.contains("API_KEY_SERVICE_BLOCKED") {
+            return Err(
+                "Google Cloud Translate rejected this key because the Cloud Translation API is blocked for it. If this is a Gemini API key, choose the Gemini provider instead."
+                    .to_string(),
+            );
+        }
+
         return Err(format!("Google Translate 오류 {status}: {body}"));
     }
 
@@ -358,10 +369,11 @@ async fn translate_with_openai_compatible(
     request: TranslateRequest,
 ) -> Result<TranslateResult, String> {
     let is_local = request.provider_id == "local";
-    let provider_name = if is_local {
-        "Local translation model"
-    } else {
-        "OpenAI / low-cost LLM"
+    let provider_name = match request.provider_id.as_str() {
+        "gemini" => "Gemini",
+        "custom-api" => "Custom API key",
+        "local" => "Local translation model",
+        _ => "OpenAI / low-cost LLM",
     };
     let api_key = request.api_key.trim().to_string();
 
@@ -371,6 +383,11 @@ async fn translate_with_openai_compatible(
 
     let target_language = requested_target_language(&request);
     let target_label = target_language_label(&target_language);
+    let system_prompt = if target_language == "en" {
+        "Translate the user's text into English and rewrite it as a simple, clear prompt for an AI coding agent. Preserve code blocks, inline code, commands, file paths, URLs, placeholders, API names, product names, and exact identifiers unchanged. Remove unnecessary ambiguity when the intent is clear. Return only the final English prompt.".to_string()
+    } else {
+        format!("Translate the user's text into {target_label}. Preserve code blocks, inline code, commands, file paths, URLs, and placeholders exactly. Return only the translated text.")
+    };
     let endpoint = request
         .endpoint
         .clone()
@@ -378,6 +395,9 @@ async fn translate_with_openai_compatible(
         .unwrap_or_else(|| {
             if is_local {
                 "http://localhost:11434/v1/chat/completions".to_string()
+            } else if request.provider_id == "gemini" {
+                "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+                    .to_string()
             } else {
                 "https://api.openai.com/v1/chat/completions".to_string()
             }
@@ -388,6 +408,8 @@ async fn translate_with_openai_compatible(
         .unwrap_or_else(|| {
             if is_local {
                 "qwen2.5-coder:7b".to_string()
+            } else if request.provider_id == "gemini" {
+                "gemini-2.5-flash".to_string()
             } else {
                 "gpt-4.1-mini".to_string()
             }
@@ -399,7 +421,7 @@ async fn translate_with_openai_compatible(
         "messages": [
             {
                 "role": "system",
-                "content": format!("Translate the user's text into {target_label}. Preserve code blocks, inline code, commands, file paths, URLs, and placeholders exactly. Return only the translated text.")
+                "content": system_prompt
             },
             {
                 "role": "user",
@@ -669,6 +691,16 @@ pub fn run() {
         ))
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_store::Builder::default().build())
+        .plugin(
+            tauri_plugin_global_shortcut::Builder::new()
+                .with_handler(|app, shortcut, event| {
+                    if event.state == tauri_plugin_global_shortcut::ShortcutState::Pressed {
+                        show_overlay(app);
+                        let _ = app.emit("promptbridge-shortcut", shortcut.into_string());
+                    }
+                })
+                .build(),
+        )
         .setup(|app| {
             #[cfg(desktop)]
             {
@@ -719,19 +751,7 @@ pub fn run() {
 
             #[cfg(desktop)]
             {
-                use tauri_plugin_global_shortcut::ShortcutState;
-
-                app.handle().plugin(
-                    tauri_plugin_global_shortcut::Builder::new()
-                        .with_shortcuts(["ctrl+shift+space"])?
-                        .with_handler(|app, shortcut, event| {
-                            if event.state == ShortcutState::Pressed {
-                                show_overlay(app);
-                                let _ = app.emit("promptbridge-shortcut", shortcut.into_string());
-                            }
-                        })
-                        .build(),
-                )?;
+                app.global_shortcut().register("ctrl+shift+space")?;
             }
 
             // Hide the main window on close instead of destroying it, so the

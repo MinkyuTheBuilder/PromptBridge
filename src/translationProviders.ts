@@ -1,10 +1,21 @@
-import { Bot, Building2, Cloud, Globe2, KeyRound, Languages, Server, type LucideIcon } from "lucide-react";
+import {
+  Bot,
+  Building2,
+  Cloud,
+  Globe2,
+  KeyRound,
+  Languages,
+  Server,
+  Sparkles,
+  type LucideIcon
+} from "lucide-react";
 
 export type ProviderId =
   | "deepl"
   | "google"
   | "microsoft"
   | "openai-compatible"
+  | "gemini"
   | "libretranslate"
   | "local"
   | "custom-api";
@@ -48,14 +59,14 @@ export const providerConfigs: ProviderConfig[] = [
   },
   {
     id: "google",
-    name: "Google Translate",
+    name: "Google Cloud Translate",
     description: "Translate with Google Cloud Translation API.",
     status: "available",
-    authLabel: "Google API key",
+    authLabel: "Google Cloud Translation API key",
     authRequired: true,
     endpointLabel: "Cloud Translation endpoint",
     defaultEndpoint: "https://translation.googleapis.com/language/translate/v2",
-    helpText: "Uses the Google Cloud Translation Basic v2 endpoint and API key.",
+    helpText: "Uses the Google Cloud Translation Basic v2 endpoint and API key. Gemini API keys should use the Gemini provider instead.",
     icon: Globe2
   },
   {
@@ -84,6 +95,20 @@ export const providerConfigs: ProviderConfig[] = [
     defaultModel: "gpt-4.1-mini",
     helpText: "Uses OpenAI or compatible Chat Completions APIs.",
     icon: Bot
+  },
+  {
+    id: "gemini",
+    name: "Gemini",
+    description: "Use a Gemini API key through Google's OpenAI-compatible Chat Completions endpoint.",
+    status: "available",
+    authLabel: "Gemini API key",
+    authRequired: true,
+    endpointLabel: "Gemini OpenAI-compatible endpoint",
+    modelLabel: "Gemini model",
+    defaultEndpoint: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+    defaultModel: "gemini-2.5-flash",
+    helpText: "Uses a Gemini API key from Google AI Studio. Do not use the Google Cloud Translation endpoint for Gemini keys.",
+    icon: Sparkles
   },
   {
     id: "libretranslate",

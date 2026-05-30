@@ -9,7 +9,7 @@ It is not meant to be a general translator. It protects code blocks, inline code
 - Floating overlay opened by a global shortcut
 - System tray with overlay/main-window actions
 - Bring-your-own-key translation providers
-- DeepL, Google Translate, Microsoft Translator, OpenAI-compatible, LibreTranslate, local model, and custom API modes
+- DeepL, Google Cloud Translate, Microsoft Translator, OpenAI-compatible, Gemini, LibreTranslate, local model, and custom API modes
 - Manual provider connection test
 - One-click clearing for selected provider credentials/settings
 - Local monthly provider usage estimates and alert threshold
@@ -17,10 +17,10 @@ It is not meant to be a general translator. It protects code blocks, inline code
 - Custom protected terms for product, project, API, and brand names
 - Local privacy warnings and optional sensitive-send blocking
 - Prompt optimization profiles for bug fix, refactor, review, tests, docs, and custom workflows
-- English agent output translation into a selected reading language
+- English agent output translation into a selected reading language (temporarily hidden)
 - Optional local translation history with search, restore, delete, and retention controls
 - Settings backup/import JSON with keyless export option
-- Output copy and paste injection
+- Output copy
 - UI language switcher
 - Configurable overlay shortcut
 - Login autostart switch
@@ -29,7 +29,7 @@ It is not meant to be a general translator. It protects code blocks, inline code
 
 PromptBridge accepts any source language and targets English prompts for coding agents. The UI language is separate from the source prompt language.
 
-Output Translate can translate English agent responses back into a selected reading language. That output language is also separate from the UI language.
+Output Translate can translate English agent responses back into a selected reading language, but this workflow is temporarily hidden while PromptBridge focuses on reliable manual copy/paste.
 
 ## Development
 

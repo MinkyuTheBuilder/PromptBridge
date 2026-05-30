@@ -2,6 +2,8 @@
 
 PromptBridge v1.1 work starts with an Output Translate view.
 
+Status: temporarily hidden. Manual copy/paste is currently faster and more reliable than the reverse-translation workflow.
+
 ## Purpose
 
 Input Translate turns any source language into an English coding prompt. Output Translate handles the reverse reading workflow: paste an English response from an AI coding agent and translate it into the user's selected output language.

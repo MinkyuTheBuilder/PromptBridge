@@ -125,6 +125,9 @@ const historyRetentionOptions: Array<{ value: HistoryRetentionDays; labelKey: "h
   { value: 90, labelKey: "historyKeep90Days" }
 ];
 
+const enablePasteInjection = false;
+const enableOutputTranslate = false;
+
 function isTauriRuntime() {
   return Boolean(window.__TAURI_INTERNALS__);
 }
@@ -597,6 +600,11 @@ export function App() {
       }
       setActiveView("translate");
     } else {
+      if (!enableOutputTranslate) {
+        setNotice(tt("outputTranslateDisabled"));
+        return;
+      }
+
       setAgentOutput(entry.sourceText);
       setLocalizedOutput(entry.resultText);
       setOutputLanguage(getUiLanguage(entry.targetLanguage));
@@ -869,13 +877,13 @@ export function App() {
 
     if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
       event.preventDefault();
-      if (activeView === "output" && !isOverlay) {
+      if (enableOutputTranslate && activeView === "output" && !isOverlay) {
         if (event.shiftKey && canUseLocalizedOutput) {
-          void injectLocalizedOutput();
+          if (enablePasteInjection) void injectLocalizedOutput();
         } else {
           void translateAgentOutput();
         }
-      } else if (event.shiftKey && canUseOutput) {
+      } else if (enablePasteInjection && event.shiftKey && canUseOutput) {
         void injectOutput();
       } else {
         void translate();
@@ -950,14 +958,16 @@ export function App() {
             <Wand2 size={18} aria-hidden="true" />
             {tt("navTranslate")}
           </button>
-          <button
-            className={`nav-item ${activeView === "output" ? "active" : ""}`}
-            type="button"
-            onClick={() => setActiveView("output")}
-          >
-            <MessageSquareText size={18} aria-hidden="true" />
-            {tt("navOutput")}
-          </button>
+          {enableOutputTranslate ? (
+            <button
+              className={`nav-item ${activeView === "output" ? "active" : ""}`}
+              type="button"
+              onClick={() => setActiveView("output")}
+            >
+              <MessageSquareText size={18} aria-hidden="true" />
+              {tt("navOutput")}
+            </button>
+          ) : null}
           <button className="nav-item" type="button" onClick={() => setShowSettings(true)}>
             <KeyRound size={18} aria-hidden="true" />
             {tt("navEngine")}
@@ -1072,9 +1082,11 @@ export function App() {
                     <button className="icon-button" type="button" title={tt("copy")} disabled={!canUseOutput} onClick={copyOutput}>
                       <Clipboard size={18} aria-hidden="true" />
                     </button>
-                    <button className="icon-button" type="button" title={tt("inject")} disabled={!canUseOutput} onClick={injectOutput}>
-                      <Play size={18} aria-hidden="true" />
-                    </button>
+                    {enablePasteInjection ? (
+                      <button className="icon-button" type="button" title={tt("inject")} disabled={!canUseOutput} onClick={injectOutput}>
+                        <Play size={18} aria-hidden="true" />
+                      </button>
+                    ) : null}
                   </div>
                 </div>
                 <textarea
@@ -1127,7 +1139,7 @@ export function App() {
               </button>
             </div>
           </>
-        ) : activeView === "output" ? (
+        ) : enableOutputTranslate && activeView === "output" ? (
           <>
             <div className="prompt-grid">
               <section className="editor-pane" aria-label="English agent output input">
@@ -1158,9 +1170,11 @@ export function App() {
                     <button className="icon-button" type="button" title={tt("copy")} disabled={!canUseLocalizedOutput} onClick={copyLocalizedOutput}>
                       <Clipboard size={18} aria-hidden="true" />
                     </button>
-                    <button className="icon-button" type="button" title={tt("inject")} disabled={!canUseLocalizedOutput} onClick={injectLocalizedOutput}>
-                      <Play size={18} aria-hidden="true" />
-                    </button>
+                    {enablePasteInjection ? (
+                      <button className="icon-button" type="button" title={tt("inject")} disabled={!canUseLocalizedOutput} onClick={injectLocalizedOutput}>
+                        <Play size={18} aria-hidden="true" />
+                      </button>
+                    ) : null}
                   </div>
                 </div>
                 <textarea
@@ -1262,13 +1276,15 @@ export function App() {
                           : getUiLanguageName(getUiLanguage(entry.targetLanguage))}
                       </small>
                       <div className="history-action-buttons">
-                        <button
-                          className="ghost-button"
-                          type="button"
-                          onClick={() => restoreHistoryEntry(entry)}
-                        >
-                          {tt("restore")}
-                        </button>
+                        {entry.kind === "prompt" || enableOutputTranslate ? (
+                          <button
+                            className="ghost-button"
+                            type="button"
+                            onClick={() => restoreHistoryEntry(entry)}
+                          >
+                            {tt("restore")}
+                          </button>
+                        ) : null}
                         <button
                           className="icon-button"
                           type="button"

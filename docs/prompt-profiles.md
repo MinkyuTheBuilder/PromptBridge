@@ -4,13 +4,13 @@ Prompt profiles are the v1.2 prompt-optimization layer.
 
 ## Purpose
 
-PromptBridge first translates the user's source request into English. A prompt profile can then append focused coding-agent guidance to the translated prompt.
+PromptBridge first translates the user's source request into English. The default profile then shapes it into a simple, clear prompt for an AI coding agent.
 
-This keeps translation provider choice independent from prompt optimization. DeepL, Google Translate, Microsoft Translator, LibreTranslate, OpenAI-compatible APIs, local models, and custom endpoints all produce the base English prompt; PromptBridge applies the selected profile afterward.
+This keeps translation provider choice independent from prompt optimization. DeepL, Google Cloud Translate, Microsoft Translator, LibreTranslate, OpenAI-compatible APIs, Gemini, local models, and custom endpoints all produce the base English prompt; PromptBridge applies the selected profile afterward. LLM-based providers are also instructed during translation to avoid literal translation and return an agent-ready English prompt.
 
 ## Profiles
 
-- Direct translation: no extra instructions.
+- AI agent prompt: default mode; makes the request actionable, simple, and clear for coding agents.
 - Bug fix: root cause, narrow fix, regression tests.
 - Refactor: preserve behavior, avoid broad rewrites, call out cross-module risk.
 - Code review: prioritize bugs, regressions, security, and tests.
@@ -24,7 +24,7 @@ The selected profile and custom profile text are saved with `tauri-plugin-store`
 
 ## Guardrail
 
-Profiles should not rewrite or paraphrase protected code-like spans. Protection still happens before translation, and the profile text is appended after protected tokens are restored.
+Profiles should not rewrite or paraphrase protected code-like spans. Protection still happens before translation, and profile shaping is applied after protected tokens are restored.
 
 ## Custom Profile
 
@@ -36,4 +36,4 @@ The Custom profile is a single saved instruction block. It is intended for perso
 - file summary expectations
 - team conventions
 
-If the Custom profile is selected with no custom instructions, PromptBridge leaves the translated prompt unchanged.
+If the Custom profile is selected with no custom instructions, PromptBridge uses the default AI agent prompt shape.

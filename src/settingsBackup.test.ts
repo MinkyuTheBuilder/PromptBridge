@@ -76,7 +76,7 @@ describe("settings backup", () => {
         shortcut: "ctrl+alt+p",
         uiLanguage: "en",
         outputLanguage: "ko",
-        promptProfile: "direct",
+        promptProfile: "agent",
         customPromptProfile: "",
         customProtectedTerms: "",
         historyEnabled: true,
@@ -126,11 +126,25 @@ describe("settings backup", () => {
     expect(parsed.selectedProvider).toBe("openai-compatible");
     expect(parsed.uiLanguage).toBe("en");
     expect(parsed.outputLanguage).toBe("ko");
-    expect(parsed.promptProfile).toBe("direct");
+    expect(parsed.promptProfile).toBe("agent");
     expect(parsed.customProtectedTerms).toBe("");
     expect(parsed.historyEnabled).toBe(true);
     expect(parsed.historyRetentionDays).toBe(0);
     expect(parsed.privacyBlockEnabled).toBe(false);
     expect(parsed.usageAlertThreshold).toBe(0);
+  });
+
+  it("migrates legacy direct prompt profile backups to the AI agent prompt", () => {
+    const parsed = parseSettingsBackup(
+      JSON.stringify({
+        format: "promptbridge-settings",
+        version: 1,
+        providerSettings: {},
+        selectedProvider: "openai-compatible",
+        promptProfile: "direct"
+      })
+    );
+
+    expect(parsed.promptProfile).toBe("agent");
   });
 });

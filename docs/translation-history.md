@@ -1,10 +1,10 @@
 # Translation History
 
-PromptBridge keeps a local translation history for recent input and output translation work.
+PromptBridge keeps a local translation history for recent prompt translation work.
 
 ## Scope
 
-- Stores recent prompt translations and output translations.
+- Stores recent prompt translations. Output Translate is temporarily hidden.
 - Keeps the newest items first.
 - Caps history at 50 items.
 - Saves locally with `tauri-plugin-store`, with `localStorage` fallback for browser preview.
@@ -27,7 +27,7 @@ History search matches:
 
 Restoring a prompt history item opens the Input Translate view and restores the source, English prompt, and prompt profile.
 
-Restoring an output history item opens the Output Translate view and restores the English agent output, localized result, and output language.
+Restoring output history items is temporarily disabled while Output Translate is hidden.
 
 ## Delete
 

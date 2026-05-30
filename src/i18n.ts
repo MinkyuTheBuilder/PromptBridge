@@ -88,7 +88,7 @@ const en = {
   shortcutHeading: "Overlay shortcut",
   shortcutDescription: "Switch combinations if another app already uses one.",
   historySettingHeading: "Save local history",
-  historySettingDescription: "Store prompt and output translations on this device.",
+  historySettingDescription: "Store prompt translations on this device.",
   historyRetentionHeading: "History retention",
   historyRetentionDescription:
     "Old entries are removed locally when PromptBridge loads history or records a new translation.",
@@ -123,7 +123,7 @@ const en = {
   outputLanguageHeading: "Output language",
   outputLanguageDescription: "Translate English agent responses into this language.",
   promptProfileHeading: "Prompt profile",
-  promptProfileDescription: "Add focused coding-agent guidance after translation.",
+  promptProfileDescription: "Rewrite requests into simple, clear prompts for AI coding agents.",
   customProfileHeading: "Custom profile instructions",
   customProfilePlaceholder:
     "Example: Always mention changed files, verification commands, and rollout risk.",
@@ -174,7 +174,7 @@ const en = {
   autostartDisabled: "Start at login is off.",
   autostartEnabled: "PromptBridge will start at login.",
   translatingNotice: "Protecting code and commands, then translating with the selected engine.",
-  translationReady: "{provider} translation is ready. Copy it or inject it into the focused app.",
+  translationReady: "{provider} translation is ready. Copy it when you are ready to paste manually.",
   plannedPreview: "{provider} is not connected yet, so a development preview is shown.",
   settingsNeeded: "Settings needed: {settings}. Showing a development preview.",
   browserPreview: "Browser preview is showing development output.",
@@ -206,7 +206,8 @@ const en = {
     "{provider} is already at {count} sent chars this month, above your {threshold} alert threshold.",
   outputReady: "{provider} output translation is ready.",
   outputCopied: "Localized output copied to clipboard.",
-  outputInjected: "Localized output injection attempted with {strategy}."
+  outputInjected: "Localized output injection attempted with {strategy}.",
+  outputTranslateDisabled: "Output Translate is temporarily hidden. Copy and paste manually for now."
 };
 
 type UiTextKey = keyof typeof en;

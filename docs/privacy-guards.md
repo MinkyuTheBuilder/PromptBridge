@@ -18,7 +18,7 @@ Translation providers receive the text the user sends. The privacy guard is a lo
 ## Behavior
 
 - Detection runs locally in the UI.
-- Warnings appear in Input Translate and Output Translate.
+- Warnings appear in Input Translate. Output Translate is temporarily hidden.
 - By default, warnings do not block translation.
 - If Block sensitive sends is enabled in Settings, PromptBridge stops provider calls until the detected values are removed or redacted.
 - Redact detected values replaces detected sensitive spans locally while keeping surrounding prompt text.

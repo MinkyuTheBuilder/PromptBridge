@@ -1,5 +1,5 @@
 export type PromptProfileId =
-  | "direct"
+  | "agent"
   | "bugfix"
   | "refactor"
   | "review"
@@ -15,15 +15,19 @@ export type PromptProfile = {
   expectedOutput: string;
 };
 
-export const defaultPromptProfile: PromptProfileId = "direct";
+export const defaultPromptProfile: PromptProfileId = "agent";
 
 export const promptProfiles: PromptProfile[] = [
   {
-    id: "direct",
-    name: "Direct translation",
-    description: "Translate only, without adding extra coding-agent instructions.",
-    focus: [],
-    expectedOutput: ""
+    id: "agent",
+    name: "AI agent prompt",
+    description: "Rewrite the request as a simple, clear prompt for an AI coding agent.",
+    focus: [
+      "Make the task clear and actionable for an AI coding agent.",
+      "Use simple English and remove unnecessary ambiguity.",
+      "Preserve code, commands, file paths, URLs, placeholders, and product names exactly."
+    ],
+    expectedOutput: "A concise implementation response with relevant verification steps."
   },
   {
     id: "bugfix",
@@ -90,6 +94,8 @@ export const promptProfiles: PromptProfile[] = [
 ];
 
 export function getPromptProfile(id: string | null | undefined) {
+  if (id === "direct") return promptProfiles[0];
+
   return promptProfiles.find((profile) => profile.id === id) ?? promptProfiles[0];
 }
 
@@ -101,30 +107,45 @@ export function applyPromptProfile(
   const profile = getPromptProfile(profileId);
   const trimmedPrompt = prompt.trim();
 
-  if (profile.id === "direct" || !trimmedPrompt) {
+  if (!trimmedPrompt) {
     return prompt;
+  }
+
+  if (profile.id === "agent") {
+    return formatAgentPrompt(trimmedPrompt);
   }
 
   if (profile.id === "custom") {
     const trimmedInstructions = customInstructions.trim();
-    if (!trimmedInstructions) return prompt;
+    if (!trimmedInstructions) return formatAgentPrompt(trimmedPrompt);
 
-    return `${trimmedPrompt}
+    return `${formatAgentPrompt(trimmedPrompt)}
 
-PromptBridge custom profile:
+Additional instructions:
 
 ${trimmedInstructions}`;
   }
 
   const focusLines = profile.focus.map((item) => `- ${item}`).join("\n");
 
-  return `${trimmedPrompt}
-
-PromptBridge profile: ${profile.name}
+  return `${formatAgentPrompt(trimmedPrompt)}
 
 Focus:
 ${focusLines}
 
 Expected output:
 - ${profile.expectedOutput}`;
+}
+
+function formatAgentPrompt(prompt: string) {
+  return `Please help me with this coding task.
+
+Task:
+${prompt}
+
+Guidance:
+- Make reasonable engineering assumptions when details are missing.
+- Keep the solution simple, clear, and scoped to the task.
+- Preserve code, commands, file paths, URLs, placeholders, and exact names unchanged.
+- Include verification steps when they are relevant.`;
 }

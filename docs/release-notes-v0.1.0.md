@@ -20,7 +20,7 @@ npm run release:smoke
 - Desktop app shell with main window, tray menu, and quick overlay window.
 - Global shortcut support for opening the overlay.
 - Bring-your-own-key translation provider settings.
-- Provider options for DeepL, Google Translate, Microsoft Translator, OpenAI-compatible APIs, LibreTranslate, local translation models, and custom API endpoints.
+- Provider options for DeepL, Google Cloud Translate, Microsoft Translator, OpenAI-compatible APIs, Gemini, LibreTranslate, local translation models, and custom API endpoints.
 - Translation direction fixed to any source language into English coding prompts.
 - Prompt protection for code blocks, inline code, commands, paths, URLs, and placeholders.
 - Protected token preview and Protection Rules view.

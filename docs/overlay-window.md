@@ -9,9 +9,8 @@
 - The settings modal includes a login autostart switch backed by `tauri-plugin-autostart`.
 - Overlay keyboard flow:
   - `Ctrl+Enter` translates the current input.
-  - `Ctrl+Shift+Enter` injects the translated output when available.
+  - `Ctrl+Shift+Enter` no longer injects translated output while paste injection is hidden.
   - `Escape` hides the overlay.
-- Successful injection hides the overlay after a short delay.
 - Tray left click: opens the overlay.
 - Tray menu:
   - `Show PromptBridge` opens the main window.
@@ -44,4 +43,4 @@ Autostart settings screenshot:
 - Confirm `Ctrl+Shift+Space` does not conflict with common target apps.
 - Confirm the frameless overlay receives focus reliably.
 - Confirm the overlay stays above VS Code, Windows Terminal, and browser-based AI tools.
-- Confirm injection success still hides the overlay only after the target app has received paste input.
+- Revisit paste injection only after there is a more reliable target-app handoff.

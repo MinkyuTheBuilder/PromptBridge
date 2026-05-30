@@ -36,7 +36,7 @@
 - `pb_privacy_test.mjs` used AWS test key `AKIAIOSFODNN7EXAMPLE00` (22 chars) but the regex requires exactly 20 chars (AKIA + 16). Fixed to `AKIAIOSFODNN7EXAMPLE`. Implementation is correct.
 
 **Remaining manual items before beta hand-off:**
-- Provider tests with other API keys: DeepL, Google Translate, Microsoft Translator, LibreTranslate, Local model, Custom API
+- Provider tests with other API keys: DeepL, Google Cloud Translate, Microsoft Translator, Gemini, LibreTranslate, Local model, Custom API
 - macOS: accessibility permissions and full checklist still need testing
 
 ## 2026-05-27 — Beta verification + two overlay bug fixes
@@ -44,18 +44,19 @@
 **What shipped in v0.1.0:**
 - Desktop app shell: main window, floating overlay, system tray.
 - Global shortcut for overlay. Configurable shortcut setting.
-- BYOK translation providers: DeepL, Google Translate, Microsoft Translator, OpenAI-compatible, LibreTranslate, local model, custom API.
+- BYOK translation providers: DeepL, Google Cloud Translate, Microsoft Translator, OpenAI-compatible, Gemini, LibreTranslate, local model, custom API.
 - Manual provider connection test.
 - Provider usage estimate with monthly alert threshold.
 - Prompt protection for code blocks, inline code, commands, paths, URLs, placeholders.
 - Custom protected terms.
 - Protection Rules preview panel.
 - Privacy guards with sensitive-data warnings and optional block-sensitive-sends.
-- Prompt optimization profiles: Direct, Bug Fix, Refactor, Code Review, Tests, Docs, Custom.
+- Prompt optimization profiles: AI Agent Prompt, Bug Fix, Refactor, Code Review, Tests, Docs, Custom.
 - Output translation: English agent responses → selected reading language.
 - Local translation history with search, restore, delete, retention controls.
 - Settings backup / import JSON (keyless export option).
-- Copy + paste injection output actions.
+- Copy output action.
+- Paste injection and Output Translate are temporarily hidden while the workflow is simplified around manual copy/paste.
 - UI language switcher (13 languages, Arabic RTL).
 - Login autostart toggle.
 - Windows release artifacts: MSI + NSIS installers at `src-tauri/target/release/bundle/`.

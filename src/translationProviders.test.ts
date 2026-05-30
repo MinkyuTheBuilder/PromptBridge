@@ -13,6 +13,7 @@ describe("translation provider registry", () => {
       "google",
       "microsoft",
       "openai-compatible",
+      "gemini",
       "libretranslate",
       "local",
       "custom-api"
@@ -20,12 +21,23 @@ describe("translation provider registry", () => {
   });
 
   it("requires credentials for hosted paid providers", () => {
-    for (const providerId of ["deepl", "google", "microsoft", "openai-compatible"] as const) {
+    for (const providerId of ["deepl", "google", "microsoft", "openai-compatible", "gemini"] as const) {
       const provider = getProviderConfig(providerId);
       const missing = validateProviderSettings(provider, getDefaultProviderSettings(provider));
 
       expect(missing).toContain(provider.authLabel);
     }
+  });
+
+  it("configures Gemini with the Google AI OpenAI-compatible endpoint", () => {
+    const provider = getProviderConfig("gemini");
+    const defaults = getDefaultProviderSettings(provider);
+
+    expect(provider.authLabel).toBe("Gemini API key");
+    expect(defaults.endpoint).toBe(
+      "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+    );
+    expect(defaults.model).toBe("gemini-2.5-flash");
   });
 
   it("requires endpoint and model for custom API mode", () => {
